@@ -1,0 +1,112 @@
+﻿@model AI_Web_App.Models.BigCatalogUser
+
+@{
+    ViewBag.Title = "User";
+}
+
+<h2>Konto użytkownika</h2>
+
+<hr />
+<dl class="dl-horizontal">
+    <dt>
+        @Html.DisplayNameFor(model => model.User.UserName)
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.User.UserName)
+    </dd>
+
+    <dt>
+        Ostatnio przeczytana książka
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.User.LastBookRead)
+    </dd>
+    <dt>
+        @Html.DisplayNameFor(model => model.Time)
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.Time.Hours) godzin
+    </dd>
+
+</dl>
+<p class="nav-item">@Html.ActionLink("Przejdz do katalogu","Index","BookCatalogs", routeValues: null,htmlAttributes : new { @class= "btn btn-link"})</p>
+<h2>Czytane ksiązki</h2>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.BookReadingNow[0].Id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BookReadingNow[0].Name)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model.BookReadingNow) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Id)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        
+    </tr>
+}
+
+</table>
+<h2>Wypożyczone ksiązki</h2>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.LendBooks[0].Id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LendBooks[0].Name)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model.LendBooks)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+
+        </tr>
+    }
+
+</table>
+<h2>Ksiązki do oddania</h2>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ReturnBooks[0].Id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ReturnBooks[0].Name)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model.ReturnBooks)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+
+        </tr>
+    }
+
+</table>

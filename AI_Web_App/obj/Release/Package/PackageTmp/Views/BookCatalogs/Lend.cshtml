@@ -1,0 +1,70 @@
+﻿@model AI_Web_App.Models.BookCatalog
+@{
+    ViewBag.Title = "Loan a book";
+
+}
+
+
+<h2>Loan a book</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Wypożycz książkę</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+        <div class="form-group">
+            @Html.LabelFor(model => model.Loan, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(
+    model => model.Loan,
+    ((IEnumerable<AI_Web_App.Models.Loan>)ViewBag.Loans)
+    .Select(x => new SelectListItem() { Text = x.ToString(), Value = x.ToString() }),
+    htmlAttributes: new { @class = "form-control", id = "LoansId" }
+    )
+
+            </div>
+        </div>
+
+        
+
+        <div class="form-group" id="myOwner">
+
+            @Html.LabelFor(model => model.Owner, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(
+    model => model.Owner,
+    ((IEnumerable<AI_Web_App.Models.ApplicationUser>)ViewBag.Users)
+    .Select(x => new SelectListItem() { Text = x.UserName, Value = x.UserName }),
+    "Select user", htmlAttributes: new { @class = "form-control", id = "UsersId" }
+    )
+                <script>
+                    $("#LoansId").on("change", function () {
+
+                        if ($("#LoansId").val() == "InsideSystem") {
+                            $("#UsersId").show();
+                        } else {
+                            $("#UsersId").hide();
+                        }
+                    });
+                </script>
+            </div>
+        </div>
+
+
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

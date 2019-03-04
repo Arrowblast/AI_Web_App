@@ -1,0 +1,64 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+<script type="text/javascript" src="@Url.Content("~/Scripts/jquery-1.10.2.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/Scripts/jquery.unobtrusive-ajax.min.js")"></script>
+@Styles.Render("~/Content/css")
+
+<div id="SlideshowImages">
+    <div> <img class="img-responsive" src="/Content/Images/20170509_Eng_Library_DJA_012_3.jpg" border="0"> </div>
+    <div> <img class="img-responsive" src="/Content/Images/DSC_9842.jpg" border="0"> </div>
+    <div> <img class="img-responsive" src="/Content/Images/f7719bdbc87fd5f63105cee85e602266.jpg" border="0"> </div>
+    <div> <img class="img-responsive" src="/Content/Images/Library-books-4.jpg" border="0"> </div>
+    <div> <img class="img-responsive" src="/Content/Images/stacks.jpg" border="0"> </div>
+</div>
+<style type="text/css" style="display: none !important;">
+
+    .img-responsive {
+        position: absolute;
+        display: block;
+        min-height: 100%;
+        min-width: 1024px;
+        /* Set up proportionate scaling */
+        width: 100%;
+        height: auto;
+        float: left;
+        
+        
+        margin-left: -200px;
+        z-index: -1;
+        background-size: cover;
+    }
+</style>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#SlideshowImages  > div:gt(0)").hide();
+        setInterval(function () {
+            $('#SlideshowImages > div:first').fadeOut(1000).next().fadeIn(1000).end().appendTo('#SlideshowImages');
+        }, 3000);
+    });
+</script>
+
+
+
+<div class="mine">
+   
+        <h1 class="mine">E - library</h1>
+        <p class="lead mine">Twój system do zarządzania domową biblioteką </p>
+        
+
+    
+   
+    <style type="text/css" style="display: none !important;">
+
+        .mine {
+            color: white;
+            text-align : center;
+            font-style:oblique;
+           
+            text-shadow : initial;
+            position : relative;
+            z-index: 2;
+        }
+    </style>
+</div>

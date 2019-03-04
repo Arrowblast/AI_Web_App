@@ -1,0 +1,108 @@
+﻿@model AI_Web_App.Models.BookWithComments
+
+@{
+    ViewBag.Title = "Details";
+   
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Book</h4>
+    <hr />
+    
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Book.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Book.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Book.Owner)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Book.Owner)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Book.Artist)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Book.Artist)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Book.Wydawnictwo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Book.Wydawnictwo)
+        </dd>
+        @if (Model.Book.Owner != Model.Book.TrueOwner)
+        {<dt>
+            Wypożyczone od
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Book.TrueOwner)
+        </dd>}
+
+    </dl>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Comments</h4>
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Comment.Comment, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Comment.Comment, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Comment.Comment, "", new { @class = "text-danger" })
+
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+
+        </div>
+
+    </div>
+    }
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Comment.User)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Comment.Comment)
+            </th>
+
+        </tr>
+
+        @foreach (var item in ((IEnumerable<AI_Web_App.Models.Comments>)ViewBag.Comments).Select(x => x))
+        {
+            <tr>
+                <th>
+                    @Html.DisplayFor(model => item.User)
+                </th>
+                <th>
+                    @Html.DisplayFor(model => item.Comment)
+                </th>
+
+
+
+            </tr>
+        }
+
+    </table>
+    <p>
+
+        @Html.ActionLink("Back to List", "Index")
+    </p>
