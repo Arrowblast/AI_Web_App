@@ -506,7 +506,9 @@ namespace AI_Web_App.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             BookCatalog bookCatalog = db.Catalogs.Find(id);
-            db.Catalogs.Remove(bookCatalog);
+            bookCatalog.Owner = null;
+            bookCatalog.TrueOwner = null;
+            bookCatalog.Loan = Loan.None;
             db.SaveChanges();
             return RedirectToAction("Index");
         }
