@@ -149,43 +149,61 @@ namespace AI_Web_App.Controllers
                 reading.BeginTime = DateTime.Now;
                 reading.EndTime = DateTime.Now;
                 readingDb.ReadingBooks.Add(reading);
-                foreach (BookCatalog b in db.Catalogs)
-                {
-                    if (b.Id.Equals(bookCatalog.Id))
-                    {
-                        b.Reading = true;
-                        break;
-                    }
-                }
+                // Is bookCatalog equals 'b' inside 'if'?
+                bookCatalog.Reading = true;
+ //               foreach (BookCatalog b in db.Catalogs)
+ //               {
+ //                   if (b.Id.Equals(bookCatalog.Id))
+ //                   {
+ //                       b.Reading = true;
+ //                       break;
+ //                   }
+ //               }
             }
             else
+            {
+                // Is it the same like commented? All conditions are in db
+                ReadingBooks r = readingDb.ReadingBooks.Where(book => book.User == bookCatalog.Owner && book.BookName == bookCatalog.Name).First();
+                if (r != null)
                 {
-                foreach(ReadingBooks r in readingDb.ReadingBooks)
-                {
-                    if(r.User==bookCatalog.Owner && r.BookName==bookCatalog.Name)
+                    r.EndTime = DateTime.Now;
+                    TimeSpan time = r.EndTime.Subtract(r.BeginTime);
+                    CatalogUser c = catalogUsersDb.CatalogUsers.Where(user => user.UserName == r.User).First();
+                    if (c != null)
                     {
-                        r.EndTime = DateTime.Now;
-                        TimeSpan time = r.EndTime.Subtract(r.BeginTime);
-                        foreach(CatalogUser c in catalogUsersDb.CatalogUsers)
-                        {
-                            if(c.UserName==r.User)
-                            {
-                                c.LastBookRead = r.BookName;
-                                c.Hours += time.Hours;
-                            }
-                        }
-                        readingDb.ReadingBooks.Remove(r);
-                        break;
+                        c.LastBookRead = r.BookName;
+                        c.Hours += time.Hours;
                     }
+                    readingDb.ReadingBooks.Remove(r);
                 }
-                foreach (BookCatalog b in db.Catalogs)
-                {
-                    if (b.Id.Equals(bookCatalog.Id))
-                    {
-                        b.Reading = false;
-                        break;
-                    }
-                }
+                //foreach(ReadingBooks r in readingDb.ReadingBooks)
+                //{
+                //    if(r.User==bookCatalog.Owner && r.BookName==bookCatalog.Name)
+                //    {
+                //        r.EndTime = DateTime.Now;
+                //        TimeSpan time = r.EndTime.Subtract(r.BeginTime);
+                //        foreach(CatalogUser c in catalogUsersDb.CatalogUsers)
+                //        {
+                //            if(c.UserName==r.User)
+                //            {
+                //                c.LastBookRead = r.BookName;
+                //                c.Hours += time.Hours;
+                //            }
+                //        }
+                //        readingDb.ReadingBooks.Remove(r);
+                //        break;
+                //    }
+                //}
+                // Is bookCatalog equals 'b' inside 'if'?
+                bookCatalog.Reading = false;
+//               foreach (BookCatalog b in db.Catalogs)
+//               {
+//                   if (b.Id.Equals(bookCatalog.Id))
+//                   {
+//                       b.Reading = false;
+//                       break;
+//                   }
+//               }
             }
             catalogUsersDb.SaveChanges();
             readingDb.SaveChanges();
@@ -410,17 +428,23 @@ namespace AI_Web_App.Controllers
             ViewBag.Books = db.Catalogs.Where(x => x.Owner == null).ToList();
             if (ModelState.IsValid)
             {
-                foreach(BookCatalog b in db.Catalogs)
+                BookCatalog b = db.Catalogs.Where(book => book.Name == bookCatalog.Name).First();
+                if (b != null)
                 {
-                    if(b.Name==bookCatalog.Name)
-                    {
-                        b.Owner = System.Web.HttpContext.Current.User.Identity.Name;
-                        b.TrueOwner = System.Web.HttpContext.Current.User.Identity.Name;
-                        b.Loan = Loan.None;
-                        break;
-                        
-                    }
+                    b.Owner = System.Web.HttpContext.Current.User.Identity.Name;
+                    b.TrueOwner = b.Owner;
+                    b.Loan = Loan.None;
                 }
+                //foreach(BookCatalog b in db.Catalogs)
+                //{
+                //    if(b.Name==bookCatalog.Name)
+                //    {
+                //        b.Owner = System.Web.HttpContext.Current.User.Identity.Name;
+                //        b.TrueOwner = b.Owner;
+                //        b.Loan = Loan.None;
+                //        break;
+                //    }
+                //}
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
