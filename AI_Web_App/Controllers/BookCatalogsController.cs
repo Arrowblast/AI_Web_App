@@ -416,7 +416,7 @@ namespace AI_Web_App.Controllers
                     {
                         b.Owner = System.Web.HttpContext.Current.User.Identity.Name;
                         b.TrueOwner = System.Web.HttpContext.Current.User.Identity.Name;
-                        b.Loan = Loan.None;
+                        b.Loan = Loan.FromDatabase;
                         break;
                         
                     }
@@ -438,7 +438,7 @@ namespace AI_Web_App.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        
         public ActionResult Create([Bind(Include = "Id,Name,Artist,Wydawnictwo")] BookCatalog bookCatalog)
         {
             if (ModelState.IsValid)
@@ -473,7 +473,7 @@ namespace AI_Web_App.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        
         public ActionResult Edit([Bind(Include = "Id,Name,Owner,Artist,Wydawnictwo")] BookCatalog bookCatalog)
         {
             if (ModelState.IsValid)
@@ -502,13 +502,20 @@ namespace AI_Web_App.Controllers
 
         // POST: BookCatalogs/Delete/5
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
+        
         public ActionResult DeleteConfirmed(int id)
         {
             BookCatalog bookCatalog = db.Catalogs.Find(id);
-            bookCatalog.Owner = null;
-            bookCatalog.TrueOwner = null;
-            bookCatalog.Loan = Loan.None;
+            if (bookCatalog.Loan != Loan.FromDatabase)
+            {
+                db.Catalogs.Remove(bookCatalog);
+            }
+            else
+            {
+                bookCatalog.Owner = null;
+                bookCatalog.TrueOwner = null;
+                bookCatalog.Loan = Loan.None;
+            }
             db.SaveChanges();
             return RedirectToAction("Index");
         }

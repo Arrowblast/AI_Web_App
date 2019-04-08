@@ -78,7 +78,7 @@ namespace AI_Web_App.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        
         public ActionResult Create([Bind(Include = "Id,UserName,LastBookRead")] CatalogUser catalogUser)
         {
             if (ModelState.IsValid)
@@ -110,7 +110,7 @@ namespace AI_Web_App.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        
         public ActionResult Edit([Bind(Include = "Id,UserName,LastBookRead")] CatalogUser catalogUser)
         {
             if (ModelState.IsValid)
@@ -139,7 +139,7 @@ namespace AI_Web_App.Controllers
 
         // POST: CatalogUsers/Delete/5
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
+        
         public ActionResult DeleteConfirmed(int id)
         {
             CatalogUser catalogUser = db.CatalogUsers.Find(id);

@@ -9,7 +9,8 @@ namespace AI_Web_App.Models
     {
         InsideSystem,
         OutsideSystem,
-        None
+        None,
+        FromDatabase
     }
     public class BookCatalog
     {
