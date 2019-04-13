@@ -74,20 +74,10 @@ namespace AI_Web_App.Controllers
                 return View(model);
             }
 
-            // Require the user to have a confirmed email before they can log on.
-            var user = await UserManager.FindByNameAsync(model.Email);
-            var dataContext = new BooksCatalogDbContext();
-            CatalogUserDbContext usersDb = new CatalogUserDbContext();
-            if (user != null)
-            {
-               
-                if (!await UserManager.IsEmailConfirmedAsync(user.Id))
-                {
-                    ViewBag.errorMessage = "You must have a confirmed email to log on.";
-                    return View("Error");
-                }
-            }
+            // Is it used anywhere?
 
+            //var dataContext = new BooksCatalogDbContext();
+            //CatalogUserDbContext usersDb = new CatalogUserDbContext();
 
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
@@ -103,6 +93,17 @@ namespace AI_Web_App.Controllers
                 case SignInStatus.Failure:
                 default:
                     ModelState.AddModelError("", "Invalid login attempt.");
+                    // Require the user to have a confirmed email before they can log on.
+                    var user = await UserManager.FindByNameAsync(model.Email);
+                    if (user != null)
+                    {
+
+                        if (!await UserManager.IsEmailConfirmedAsync(user.Id))
+                        {
+                            ViewBag.errorMessage = "You must have a confirmed email to log on.";
+                            return View("Error");
+                        }
+                    }
                     return View(model);
             }
         }
